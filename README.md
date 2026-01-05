@@ -1,36 +1,264 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Studio
 
-## Getting Started
+<h1 align="center">AI Studio: AI-Powered Real Estate Photo Editor</h1>
 
-First, run the development server:
+<p align="center">
+  Transform property photos with AI. Upload images, select styles, and generate stunning real estate visuals instantly.
+</p>
+
+<p align="center">
+  <img width="1200" alt="AI Studio dashboard" src="public/hero.png" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/yourusername/aistudio/blob/main/LICENSE.md">
+    <img src="https://img.shields.io/badge/license-AGPL--3.0-blue.svg" alt="License: AGPL-3.0" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="#introduction"><strong>Introduction</strong></a> ·
+  <a href="#key-features"><strong>Features</strong></a> ·
+  <a href="#installation"><strong>Installation</strong></a> ·
+  <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
+  <a href="#architecture"><strong>Architecture</strong></a>
+</p>
+<br/>
+
+## Introduction
+
+AI Studio is a cutting-edge real estate photo editing platform that leverages artificial intelligence to transform property photographs. Upload your real estate images, choose from professionally curated style templates, and let AI enhance your listings with stunning visuals that capture attention and drive more showings.
+
+**Why AI Studio?**
+
+- **AI-Powered Editing** – Transform ordinary property photos into professional marketing materials
+- **Style Templates** – Curated collection of real estate photography styles (modern, luxury, cozy, etc.)
+- **Instant Processing** – Generate enhanced images in seconds using Fal.ai
+- **Team Collaboration** – Work together with your real estate team in shared workspaces
+- **White-label Ready** – Custom branding options for agencies and brokerages
+
+## Key Features
+
+### AI Photo Enhancement
+Upload property photos and apply AI-powered enhancements. Choose from professionally designed style templates that transform ordinary photos into marketing-ready visuals optimized for real estate listings.
+
+### Style Templates
+Curated collection of photography styles including:
+- **Modern Minimalist** – Clean lines, contemporary appeal
+- **Luxury Estate** – High-end, sophisticated presentation
+- **Cozy Family Home** – Warm, inviting atmosphere
+- **Urban Chic** – City lifestyle appeal
+
+### Team Workspaces
+Create collaborative workspaces for your real estate team:
+- **Role-based Access** – Owner, admin, and member permissions
+- **Shared Projects** – Work together on property listings
+- **Team Invitations** – Invite members via email
+- **Custom Branding** – White-label options for agencies
+
+### Project Management
+Organize your photo editing projects with:
+- **Project Dashboard** – Grid and table views of all projects
+- **Before/After Comparison** – Side-by-side image comparison
+- **Status Tracking** – Monitor processing status and completion
+- **Bulk Operations** – Edit multiple photos simultaneously
+
+### Admin Panel
+Comprehensive admin functionality for platform management:
+- **User Management** – View and manage all users
+- **Workspace Oversight** – Monitor team workspaces
+- **Analytics Dashboard** – Track usage and performance metrics
+
+## Installation
+
+### Quick Start (Recommended)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+# 1. Clone the repository
+git clone https://github.com/yourusername/aistudio.git
+cd aistudio
+
+# 2. Install dependencies
+pnpm install
+
+# 3. Copy environment variables
+cp .env.example .env.local
+
+# 4. Set up the database
+pnpm db:push
+
+# 5. Start development server
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Manual Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/yourusername/aistudio.git
+cd aistudio
+pnpm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Copy the example environment file:
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+Update `.env.local` with your credentials:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `DATABASE_URL` – PostgreSQL connection string
+- `FAL_API_KEY` – Fal.ai API key for AI image processing
+- `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `NEXT_PUBLIC_APP_URL`
+- `RESEND_API_KEY` – Email delivery service
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Push the database schema:
 
-## Deploy on Vercel
+```bash
+pnpm db:push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Useful Commands
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start development server |
+| `pnpm build` | Production build |
+| `pnpm start` | Start production server |
+| `pnpm lint` | Run ESLint |
+| `pnpm db:push` | Push schema changes to database |
+| `pnpm db:generate` | Generate Drizzle migrations |
+| `pnpm db:studio` | Open Drizzle Studio |
+| `pnpm email` | Preview email templates |
+
+## Tech Stack
+
+### Core Framework
+- **Next.js 16** – App Router, Server Actions, TypeScript
+- **React 19** – Latest React with concurrent features
+- **TypeScript 5** – Type-safe development
+
+### Database & ORM
+- **PostgreSQL** – Primary database
+- **Drizzle ORM** – Type-safe database operations
+
+### Authentication & Security
+- **Better Auth** – Modern authentication with OAuth providers
+- **Session Management** – Secure session handling
+
+### AI & Image Processing
+- **Fal.ai** – AI-powered image generation and editing
+- **Custom Style Templates** – Curated prompts for real estate photography
+
+### UI & Styling
+- **Tailwind CSS v4** – Utility-first CSS framework
+- **shadcn/ui** – High-quality React components
+- **Radix UI** – Accessible component primitives
+- **@tabler/icons-react** – Consistent icon library
+
+### Development Tools
+- **ESLint** – Code linting and formatting
+- **Drizzle Kit** – Database migration and studio
+- **React Email** – Email template development
+
+## Architecture
+
+AI Studio follows a modern web application architecture:
+
+```
+┌─────────────────┐     ┌──────────────────┐
+│    Fal.ai API   │────▶│   ImageGeneration │
+│ (AI Processing) │     │   Style Templates │
+└─────────────────┘     └────────┬─────────┘
+                                 │
+                                 ▼
+┌─────────────────┐     ┌──────────────────┐
+│   Better Auth   │────▶│   User Session    │
+│ (Authentication)│     │   Workspace       │
+└─────────────────┘     │   Team Members    │
+                        └────────┬─────────┘
+                                 │
+                                 ▼
+                        ┌──────────────────┐
+                        │   Dashboard       │
+                        │   Projects        │
+                        │   Admin Panel     │
+                        └──────────────────┘
+```
+
+### Key Directories
+
+```
+app/
+├── dashboard/          # Main project dashboard
+│   ├── page.tsx        # Projects grid with view toggle
+│   ├── layout.tsx      # Dashboard layout with header
+│   ├── settings/       # Workspace & team settings
+│   └── [id]/           # Individual project detail
+├── admin/              # Admin panel
+│   ├── users/          # User management
+│   ├── workspaces/     # Workspace oversight
+│   └── layout.tsx      # Admin layout
+├── api/
+│   ├── auth/           # Better Auth endpoints
+│   └── edit-photo/     # Fal.ai image processing
+lib/
+├── db/
+│   ├── schema.ts       # Drizzle database schema
+│   └── index.ts        # Database client
+├── mock/               # Mock data for development
+├── style-templates.ts  # AI style templates
+├── auth.ts             # Better Auth configuration
+└── siteconfig.ts       # Site configuration
+components/
+├── ui/                 # shadcn/ui base components
+├── dashboard/          # Dashboard-specific components
+├── projects/           # Project creation workflow
+├── settings/           # Settings page components
+├── admin/              # Admin panel components
+└── tables/             # Data tables with virtual scrolling
+```
+
+## Environment Variables
+
+```env
+# Database
+DATABASE_URL=postgresql://username:password@localhost:5432/aistudio
+
+# AI Processing
+FAL_API_KEY=your_fal_api_key_here
+
+# Authentication
+BETTER_AUTH_SECRET=your_secret_key
+BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Email
+RESEND_API_KEY=your_resend_api_key
+```
+
+## Contributing
+
+We welcome contributions to AI Studio:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Development Guidelines
+
+- Use TypeScript for all new code
+- Follow the existing component patterns
+- Add tests for new features
+- Update documentation as needed
+- Use conventional commit messages
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0 - see the [LICENSE.md](LICENSE.md) file for details.
+
+---
+
+Built for real estate professionals who want to showcase properties in their best light.
