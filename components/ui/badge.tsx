@@ -20,6 +20,18 @@ const badgeVariants = cva(
         "status-pending": "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/20",
         "status-completed": "bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/20",
         "status-archived": "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400 border-zinc-500/20",
+        // Admin status variants
+        "status-suspended": "bg-red-500/15 text-red-700 dark:text-red-400 border-red-500/20",
+        "status-trial": "bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/20",
+        "status-inactive": "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400 border-zinc-500/20",
+        // Plan variants
+        "plan-free": "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400 border-zinc-500/20",
+        "plan-pro": "bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/20",
+        "plan-enterprise": "bg-amber-500/15 text-amber-700 dark:text-amber-400 border-amber-500/20",
+        // Role variants
+        "role-owner": "bg-violet-500/15 text-violet-700 dark:text-violet-400 border-violet-500/20",
+        "role-admin": "bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/20",
+        "role-member": "bg-zinc-500/15 text-zinc-600 dark:text-zinc-400 border-zinc-500/20",
         // Tag variant for property tags
         tag: "bg-muted text-muted-foreground rounded-md px-2.5 py-0.5 text-[11px]",
       },
