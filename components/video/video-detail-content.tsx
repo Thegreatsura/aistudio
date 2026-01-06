@@ -94,10 +94,12 @@ function RealtimeVideoProgress({
   runId,
   accessToken,
   clipCount,
+  onComplete,
 }: {
   runId?: string
   accessToken?: string | null
   clipCount: number
+  onComplete?: () => void
 }) {
   const { run } = useRealtimeRun<typeof generateVideoTask>(runId ?? "", {
     accessToken: accessToken ?? "",
@@ -122,6 +124,13 @@ function RealtimeVideoProgress({
 
   // Use metadata progress if available, otherwise calculate from clips
   const progress = progressFromMetadata ?? (step === "compiling" ? 70 : Math.round((currentClip / total) * 100))
+
+  // Auto-refresh page when run completes or fails to get latest data
+  React.useEffect(() => {
+    if (run?.status === "COMPLETED" || run?.status === "FAILED") {
+      onComplete?.()
+    }
+  }, [run?.status, onComplete])
 
   return (
     <div className="rounded-xl border bg-card p-6">
@@ -455,6 +464,7 @@ export function VideoDetailContent({
                 runId={videoProject.triggerRunId || undefined}
                 accessToken={videoProject.triggerAccessToken}
                 clipCount={videoProject.clipCount}
+                onComplete={() => router.refresh()}
               />
             ) : isCompleted && videoProject.finalVideoUrl ? (
               <VideoPlayer
