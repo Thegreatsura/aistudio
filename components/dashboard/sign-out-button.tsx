@@ -1,12 +1,24 @@
 "use client"
 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { IconLogout } from "@tabler/icons-react"
+import { IconLogout, IconLoader } from "@tabler/icons-react"
+import { signOut } from "@/lib/auth-client"
 
 export function SignOutButton() {
+  const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
+
   const handleSignOut = async () => {
-    // TODO: Implement with better-auth signOut
-    console.log("Sign out clicked")
+    setIsLoading(true)
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/sign-in")
+        },
+      },
+    })
   }
 
   return (
@@ -14,9 +26,14 @@ export function SignOutButton() {
       variant="ghost"
       size="sm"
       onClick={handleSignOut}
+      disabled={isLoading}
       className="gap-2 text-muted-foreground hover:text-foreground"
     >
-      <IconLogout className="size-4" />
+      {isLoading ? (
+        <IconLoader className="size-4 animate-spin" />
+      ) : (
+        <IconLogout className="size-4" />
+      )}
       <span className="hidden sm:inline">Sign out</span>
     </Button>
   )

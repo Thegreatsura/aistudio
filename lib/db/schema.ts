@@ -16,10 +16,18 @@ export const workspace = pgTable("workspace", {
   name: text("name").notNull(),
   slug: text("slug").notNull().unique(),
 
+  // Company details (collected during onboarding)
+  organizationNumber: text("organization_number"), // Norwegian org number (9 digits)
+  contactEmail: text("contact_email"),
+  contactPerson: text("contact_person"),
+
   // White-label branding
   logo: text("logo"),
   primaryColor: text("primary_color"),
   secondaryColor: text("secondary_color"),
+
+  // Onboarding status
+  onboardingCompleted: boolean("onboarding_completed").notNull().default(false),
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),

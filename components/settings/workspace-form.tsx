@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { useState } from "react"
+import { toast } from "sonner"
 import {
   IconBuilding,
   IconHash,
@@ -16,7 +17,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { Workspace } from "@/lib/mock/workspace"
+import type { Workspace } from "@/lib/db/schema"
 
 interface WorkspaceFormProps {
   workspace: Workspace
@@ -25,9 +26,9 @@ interface WorkspaceFormProps {
 export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
   const [formData, setFormData] = useState({
     name: workspace.name,
-    orgNumber: workspace.orgNumber,
-    contactEmail: workspace.contactEmail,
-    contactPerson: workspace.contactPerson,
+    organizationNumber: workspace.organizationNumber || "",
+    contactEmail: workspace.contactEmail || "",
+    contactPerson: workspace.contactPerson || "",
   })
   const [isSaving, setIsSaving] = useState(false)
   const [hasChanges, setHasChanges] = useState(false)
@@ -40,10 +41,28 @@ export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSaving(true)
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsSaving(false)
-    setHasChanges(false)
+
+    try {
+      const response = await fetch("/api/workspace", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || "Failed to save changes")
+      }
+
+      toast.success("Changes saved successfully")
+      setHasChanges(false)
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Failed to save changes")
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   return (
@@ -107,9 +126,9 @@ export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
             <IconHash className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               id="org-number"
-              value={formData.orgNumber}
-              onChange={(e) => handleChange("orgNumber", e.target.value)}
-              placeholder="123 456 789"
+              value={formData.organizationNumber}
+              onChange={(e) => handleChange("organizationNumber", e.target.value)}
+              placeholder="123456789"
               className="pl-10"
             />
           </div>
