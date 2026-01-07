@@ -7,7 +7,11 @@ import {
 } from "@/lib/db/queries";
 import { generateVideoClipTask } from "./generate-video-clip";
 import { compileVideoTask } from "./compile-video";
-import { VIDEO_PRICING } from "@/lib/video/video-constants";
+import {
+  calculateVideoCost,
+  costToCents,
+  VIDEO_DEFAULTS,
+} from "@/lib/video/video-constants";
 
 export interface GenerateVideoPayload {
   videoProjectId: string;
@@ -56,8 +60,12 @@ export const generateVideoTask = task({
       await updateVideoProject(videoProjectId, {
         status: "generating",
         clipCount: clips.length,
-        estimatedCost: Math.round(
-          clips.length * VIDEO_PRICING.COST_PER_5_SECOND_CLIP * 100,
+        estimatedCost: costToCents(
+          calculateVideoCost(
+            clips.length,
+            VIDEO_DEFAULTS.CLIP_DURATION,
+            videoProject.generateNativeAudio
+          )
         ),
       });
 
@@ -134,8 +142,12 @@ export const generateVideoTask = task({
       }
 
       // Calculate actual cost
-      const actualCost = Math.round(
-        successfulClips.length * VIDEO_PRICING.COST_PER_5_SECOND_CLIP * 100,
+      const actualCost = costToCents(
+        calculateVideoCost(
+          successfulClips.length,
+          VIDEO_DEFAULTS.CLIP_DURATION,
+          videoProject.generateNativeAudio
+        )
       );
 
       // Update final status
