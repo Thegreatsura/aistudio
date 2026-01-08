@@ -90,6 +90,22 @@
   /* Admin Dashboard Accent Colors */
   --accent-violet: oklch(0.65 0.18 280);
   --accent-violet-light: oklch(0.85 0.08 280);
+
+  /* Landing Page Colors - Warm Organic Palette */
+  --landing-bg: oklch(0.98 0.012 85);
+  --landing-bg-alt: oklch(0.95 0.018 80);
+  --landing-text: oklch(0.22 0.05 55);
+  --landing-text-muted: oklch(0.45 0.04 55);
+  --landing-accent: oklch(0.62 0.14 50);
+  --landing-accent-hover: oklch(0.56 0.16 50);
+  --landing-accent-foreground: oklch(0.99 0 0);
+  --landing-border: oklch(0.22 0.05 55 / 0.10);
+  --landing-border-strong: oklch(0.22 0.05 55 / 0.18);
+  --landing-card: oklch(0.99 0.008 85);
+  --landing-card-hover: oklch(1 0.005 85);
+  --landing-shadow: oklch(0.22 0.05 55 / 0.06);
+  --landing-radius: 1.25rem;
+  --landing-radius-lg: 1.5rem;
 }
 
 .dark {
@@ -233,6 +249,42 @@
   }
 }
 
+/* Landing Page Spring Animations */
+@keyframes spring-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spring-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
 /* Animation Utility Classes */
 .animate-fade-in {
   animation: fade-in 0.4s ease-out forwards;
@@ -271,6 +323,41 @@
     transparent 100%
   );
   background-size: 200% 100%;
+}
+
+/* Landing Page Animation Utilities */
+.animate-spring-up {
+  animation: spring-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  opacity: 0;
+}
+
+.animate-spring-in {
+  animation: spring-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  opacity: 0;
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* Landing Page Staggered Delays */
+.landing-stagger-1 {
+  animation-delay: 0.1s;
+}
+.landing-stagger-2 {
+  animation-delay: 0.2s;
+}
+.landing-stagger-3 {
+  animation-delay: 0.3s;
+}
+.landing-stagger-4 {
+  animation-delay: 0.4s;
+}
+.landing-stagger-5 {
+  animation-delay: 0.5s;
+}
+.landing-stagger-6 {
+  animation-delay: 0.6s;
 }
 
 /* Staggered Animation Delays */

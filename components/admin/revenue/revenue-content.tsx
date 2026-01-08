@@ -154,25 +154,29 @@ export function RevenueContent({
     });
   }, [period, initialFalUsage]);
 
-  // Calculate metrics from the new API format (array of records with cost_cents)
-  const falCostCents = falUsage?.data?.reduce((sum, record) => sum + record.cost_cents, 0) ?? 0;
-  const falCost = falCostCents / 100; // Convert cents to dollars
+  // Calculate metrics from time_series format
+  const falCost = falUsage?.time_series?.reduce((total, bucket) => {
+    return total + bucket.results.reduce((sum, r) => sum + r.cost, 0);
+  }, 0) ?? 0;
 
   const revenueOre = getRevenueForPeriod(initialRevenueStats, period);
   const revenueUSD = revenueOre / 100 / 10; // Rough NOK to USD conversion (1 USD ≈ 10 NOK)
   const profit = revenueUSD - falCost;
   const margin = revenueUSD > 0 ? (profit / revenueUSD) * 100 : 0;
 
-  // Aggregate costs by date
+  // Aggregate costs by date from time_series buckets
   const costByDate: Record<string, { cost: number; quantity: number; icon: typeof IconCalendar }> = {};
-  if (falUsage?.data && falUsage.data.length > 0) {
-    for (const record of falUsage.data) {
-      const date = new Date(record.timestamp).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  if (falUsage?.time_series) {
+    for (const bucket of falUsage.time_series) {
+      if (bucket.results.length === 0) continue;
+      const date = new Date(bucket.bucket).toLocaleDateString("en-US", { month: "short", day: "numeric" });
       if (!costByDate[date]) {
         costByDate[date] = { cost: 0, quantity: 0, icon: IconCalendar };
       }
-      costByDate[date].cost += record.cost_cents / 100;
-      costByDate[date].quantity += record.billed_units;
+      for (const result of bucket.results) {
+        costByDate[date].cost += result.cost;
+        costByDate[date].quantity += result.quantity;
+      }
     }
   }
 

@@ -461,16 +461,23 @@ export async function updateUserNameAction(
 // Fal.ai Usage Statistics
 // ============================================================================
 
-export interface FalUsageRecord {
-  billed_units: number;
-  billed_unit_price: number;
-  cost_cents: number;
-  timestamp: string;
+export interface FalUsageResult {
+  endpoint_id: string;
+  unit: string;
+  quantity: number;
+  unit_price: number;
+  cost: number;
+}
+
+export interface FalTimeBucket {
+  bucket: string;
+  results: FalUsageResult[];
 }
 
 export interface FalUsageResponse {
-  data: FalUsageRecord[];
-  next_cursor?: string | null;
+  time_series: FalTimeBucket[];
+  has_more: boolean;
+  next_cursor: string | null;
 }
 
 export async function getFalUsageStats(
@@ -488,8 +495,8 @@ export async function getFalUsageStats(
       return { success: false, error: "FAL_API_KEY not configured" };
     }
 
-    // Correct endpoint: /platform-apis/v1/models/usage
-    const url = new URL("https://api.fal.ai/platform-apis/v1/models/usage");
+    // Correct endpoint: /v1/models/usage (per Fal.ai docs)
+    const url = new URL("https://api.fal.ai/v1/models/usage");
     url.searchParams.set("start", startDate);
     url.searchParams.set("end", endDate);
 
