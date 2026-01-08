@@ -49,6 +49,12 @@ Maximizes existing light through:
 - Natural color preservation
 - Subtle shadow fill
 
+<div class="callout-tip">
+
+**Not sure which to choose?** Start with "Modern Bright" – it works well for most property types and is our most popular template.
+
+</div>
+
 ## Choosing the Right Template
 
 Consider these factors when selecting a template:
@@ -61,6 +67,12 @@ Consider these factors when selecting a template:
 ## Preview Before Processing
 
 Always use the preview feature to see how a template will affect your specific photos. Different source images may respond differently to the same template.
+
+<div class="callout-info">
+
+**Preview is free.** Test as many templates as you like before committing – you're only charged when you process the final images.
+
+</div>
 
 ## Custom Adjustments
 

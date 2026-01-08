@@ -16,10 +16,13 @@ Your workspace is your team's home in AI Studio. Customize it to match your bran
 ## General Settings
 
 ### Workspace Name
+
 Your workspace name appears throughout AI Studio. Choose something recognizable like your agency or company name.
 
 ### Workspace URL
+
 Your custom workspace URL:
+
 ```
 app.aistudio.com/your-workspace-name
 ```
@@ -27,25 +30,38 @@ app.aistudio.com/your-workspace-name
 This URL is used for sharing and bookmarking.
 
 ### Logo
+
 Upload your company logo to personalize your workspace:
-- Recommended size: 200×50 pixels
-- Formats: PNG, SVG, or JPG
-- Maximum file size: 2 MB
+
+| Requirement | Value |
+|-------------|-------|
+| Recommended size | 200×50 pixels |
+| Formats | PNG, SVG, or JPG |
+| Max file size | 2 MB |
 
 ## Default Settings
 
 Configure defaults for new projects:
 
 ### Default Style Template
+
 Set which template is pre-selected when creating new projects. Team members can always change this per project.
 
 ### Default Export Format
+
 Choose the default download format:
 - High Resolution (original quality)
 - Web Optimized (compressed)
 
 ### Auto-Processing
+
 Enable to automatically start processing after upload. Disable for manual control over each batch.
+
+<div class="callout-tip">
+
+**Recommended:** Keep auto-processing disabled until you're familiar with AI Studio. This gives you time to preview templates before using credits.
+
+</div>
 
 ## Notifications
 
@@ -58,16 +74,23 @@ Configure how you receive notifications:
 ## Data & Privacy
 
 ### Data Retention
+
 Configure how long processed images are stored:
 - 30 days (default)
 - 60 days
 - 90 days
 
 ### Export Data
+
 Download all your workspace data including projects, settings, and billing history.
 
 ### Delete Workspace
-Permanently delete your workspace and all associated data. This action cannot be undone.
+
+<div class="callout-warning">
+
+**Warning:** Deleting your workspace permanently removes all projects, images, and settings. This action cannot be undone.
+
+</div>
 
 ## Integrations
 

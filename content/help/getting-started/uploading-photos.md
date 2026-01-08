@@ -28,6 +28,12 @@ Click the upload area to open your system's file browser and select photos.
 ### Bulk Upload
 Select multiple files at once by holding `Shift` or `Cmd/Ctrl` while clicking files.
 
+<div class="callout-info">
+
+**Pro tip:** You can upload up to 50 photos per project. For larger shoots, create multiple projects organized by property section.
+
+</div>
+
 ## Photo Requirements
 
 For optimal AI enhancement results, your source photos should:
@@ -37,6 +43,12 @@ For optimal AI enhancement results, your source photos should:
 3. **Be properly focused** – Blurry source photos will produce blurry results
 4. **Use minimal compression** – Heavily compressed JPEGs may show artifacts
 
+<div class="callout-warning">
+
+**Note:** Heavily compressed images or photos under 1280×720 pixels may not produce optimal results.
+
+</div>
+
 ## What Happens After Upload
 
 Once uploaded, your photos are:
@@ -45,7 +57,11 @@ Once uploaded, your photos are:
 2. Analyzed by our AI for optimal enhancement settings
 3. Ready for style template application
 
+<div class="note">
+
 Your original photos are always preserved—AI Studio creates enhanced copies without modifying your originals.
+
+</div>
 
 ## Troubleshooting
 

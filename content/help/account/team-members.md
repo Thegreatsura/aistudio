@@ -9,7 +9,17 @@ AI Studio makes it easy to collaborate with your team. Invite colleagues, assign
 
 ## Team Roles
 
-AI Studio has three team roles:
+| Role | Projects | Settings | Billing | Team |
+|------|----------|----------|---------|------|
+| Owner | Full access | Full access | Full access | Full access |
+| Admin | Full access | Full access | View only | Add/remove members |
+| Member | Own projects | View only | No access | No access |
+
+<div class="callout-info">
+
+**Owner accounts cannot be removed.** To change ownership, contact support to transfer the workspace to another user.
+
+</div>
 
 ### Owner
 - Full access to all features
@@ -49,32 +59,43 @@ View and manage pending invites:
 ## Managing Existing Members
 
 ### Change Role
+
 1. Find the member in your team list
 2. Click the role dropdown
 3. Select their new role
 
 ### Remove Member
+
 1. Find the member in your team list
 2. Click the **Remove** button
 3. Confirm removal
 
+<div class="note">
+
 Removed members lose access immediately but their projects remain in the workspace.
+
+</div>
 
 ## Team Collaboration Features
 
 ### Shared Projects
+
 Make projects visible to your entire team:
+
 1. Open a project
 2. Click **Share** settings
 3. Enable **Team Access**
 
 ### Comments
+
 Leave feedback on processed images:
+
 1. Click any image in a project
 2. Use the comment panel on the right
 3. @mention team members for notifications
 
 ### Activity Feed
+
 Track what's happening in your workspace:
 - New projects created
 - Processing completed
@@ -89,4 +110,8 @@ Track what's happening in your workspace:
 | Business | Up to 10 |
 | Enterprise | Unlimited |
 
-Need more seats? Contact us about Enterprise pricing.
+<div class="callout-tip">
+
+Need more seats? [Contact us](/contact) about Enterprise pricing for unlimited team members.
+
+</div>

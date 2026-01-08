@@ -7,6 +7,12 @@ popular: true
 
 AI Studio is a powerful platform designed specifically for real estate professionals who want to create stunning property listings with minimal effort. Our AI-powered tools help you enhance photos, apply professional styles, and streamline your entire photography workflow.
 
+<div class="callout-info">
+
+**Getting started is free.** Create an account and get 10 free credits to try AI Studio with your own property photos.
+
+</div>
+
 ## Key Features
 
 ### AI-Powered Enhancement
@@ -27,6 +33,12 @@ AI Studio works seamlessly with your existing workflow. Export high-resolution i
 - **Property photographers** who want to streamline their editing process
 - **Property managers** maintaining large portfolios
 - **Home stagers** showcasing their work
+
+<div class="callout-tip">
+
+Most users see a 70% reduction in photo editing time after switching to AI Studio.
+
+</div>
 
 ## Getting Started
 

@@ -9,22 +9,25 @@ Once your photos are enhanced, AI Studio offers several download options to fit 
 
 ## Download Formats
 
-### High Resolution (Recommended)
-- Full quality enhanced images
-- Same resolution as your originals
-- Best for MLS listings and print
+| Format | Best For | File Size |
+|--------|----------|-----------|
+| High Resolution | MLS listings, print materials | Original size |
+| Web Optimized | Websites, social media | ~50% smaller |
 
-### Web Optimized
-- Compressed for faster loading
-- Ideal for websites and social media
-- Smaller file sizes
+<div class="callout-tip">
+
+**Always download high-res first.** You can compress images later, but you can't restore quality once it's reduced.
+
+</div>
 
 ## Download Methods
 
 ### Single Image Download
+
 Click on any enhanced image, then click the download button. The image downloads immediately in your selected format.
 
 ### Batch Download
+
 Download all enhanced images at once:
 
 1. Click **Download All** in your project
@@ -33,6 +36,7 @@ Download all enhanced images at once:
 4. Download begins automatically
 
 ### Selective Download
+
 Choose specific images to download:
 
 1. Select images by clicking their checkboxes
@@ -51,15 +55,17 @@ For batch downloads, files are organized in a folder named after your project.
 
 ## Storage and Access
 
-### How Long Are Photos Stored?
+| Item | Storage Duration |
+|------|------------------|
+| Active projects | Indefinitely |
+| Processed images | 90 days |
+| Original uploads | 90 days |
 
-- **Active projects**: Indefinitely while your account is active
-- **Processed images**: 90 days after processing
-- **Original uploads**: 90 days after upload
+<div class="callout-info">
 
-### Re-downloading
+**Re-downloads are free.** Return to any project within the storage period to download your enhanced images again – no additional credits charged.
 
-Return to any project within the storage period to download your enhanced images again. No additional credits are charged for re-downloads.
+</div>
 
 ## Tips for Best Results
 

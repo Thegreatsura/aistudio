@@ -9,8 +9,6 @@ Credits are the simple way AI Studio tracks usage. One credit equals one photo e
 
 ## Credit Usage
 
-### What Costs Credits
-
 | Action | Credits |
 |--------|---------|
 | Enhance a photo | 1 credit |
@@ -18,14 +16,13 @@ Credits are the simple way AI Studio tracks usage. One credit equals one photo e
 | Download enhanced photo | Free |
 | Re-download same photo | Free |
 | Upload photos | Free |
+| Preview templates | Free |
 
-### What's Free
+<div class="callout-info">
 
-- Uploading photos
-- Previewing templates
-- Downloading enhanced images
-- Re-downloading past enhancements
-- Team collaboration features
+**Only processing costs credits.** Uploading, previewing, downloading, and team collaboration are all free.
+
+</div>
 
 ## Checking Your Balance
 
@@ -46,17 +43,23 @@ For subscription plans, credits renew monthly on your billing date:
 
 - New credits are added to your account
 - Unused credits from previous month roll over
-- Maximum rollover: 2x your monthly allocation
+- Maximum rollover: 2× your monthly allocation
 
-**Example**: Professional plan (200 credits/month) with 50 unused credits will have 250 credits after renewal.
+<div class="callout-tip">
+
+**Example:** Professional plan (200 credits/month) with 50 unused credits will have 250 credits after renewal.
+
+</div>
 
 ## Low Credit Alerts
 
 AI Studio notifies you when credits run low:
 
-- **25% remaining** – Dashboard notification
-- **10% remaining** – Email notification
-- **0% remaining** – Prompted to add credits
+| Balance | Notification |
+|---------|--------------|
+| 25% remaining | Dashboard notification |
+| 10% remaining | Email notification |
+| 0% remaining | Prompted to add credits |
 
 ## Purchasing Additional Credits
 
@@ -67,7 +70,11 @@ Need more credits mid-cycle? Add them anytime:
 3. Select a credit pack
 4. Complete payment
 
+<div class="note">
+
 Additional credits are added instantly and never expire.
+
+</div>
 
 ## Credit History
 

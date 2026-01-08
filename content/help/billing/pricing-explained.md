@@ -15,37 +15,40 @@ Credits are the currency of AI Studio. Each photo enhancement costs **1 credit**
 - **Flexible** – Use credits whenever you need them
 - **Persistent** – Unused credits roll over monthly
 
+<div class="callout-info">
+
+**New users get 10 free credits** to try AI Studio. No credit card required to start.
+
+</div>
+
 ## Plans Overview
 
-### Starter
-**$19/month**
+| Plan | Price | Credits | Best For |
+|------|-------|---------|----------|
+| Starter | $19/mo | 50/month | Individual agents |
+| Professional | $49/mo | 200/month | Active agents & small teams |
+| Business | $99/mo | 500/month | Teams & high-volume users |
+
+### Starter – $19/month
 - 50 credits per month
 - All style templates
 - Standard processing speed
 - Email support
 
-Best for: Individual agents with occasional needs
-
-### Professional
-**$49/month**
+### Professional – $49/month
 - 200 credits per month
 - All style templates
 - Priority processing
 - Email & chat support
 - Team collaboration (up to 3 members)
 
-Best for: Active agents and small teams
-
-### Business
-**$99/month**
+### Business – $99/month
 - 500 credits per month
 - All style templates
 - Fastest processing
 - Priority support
 - Team collaboration (up to 10 members)
 - API access
-
-Best for: Teams and high-volume users
 
 ## Pay-As-You-Go Credits
 
@@ -57,7 +60,11 @@ Need more credits? Purchase additional credits anytime:
 | 100     | $35   | $0.35      |
 | 250     | $75   | $0.30      |
 
-Pay-as-you-go credits never expire.
+<div class="callout-tip">
+
+Pay-as-you-go credits never expire – buy them once, use them whenever you need them.
+
+</div>
 
 ## Annual Billing
 

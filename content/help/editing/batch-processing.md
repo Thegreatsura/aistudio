@@ -24,17 +24,23 @@ Batch processing times depend on several factors:
 | 11–25  | 5–15 minutes   |
 | 26–50  | 15–30 minutes  |
 
-Processing happens in parallel, so larger batches benefit from efficiency gains.
+<div class="callout-info">
+
+**Processing happens in parallel.** Larger batches benefit from efficiency gains – 50 photos don't take 5× longer than 10 photos.
+
+</div>
 
 ## Best Practices
 
 ### Consistent Source Photos
+
 For best results across a batch, ensure your source photos have:
 - Similar lighting conditions
 - Consistent white balance
 - Comparable exposure levels
 
 ### Organize by Room Type
+
 Consider creating separate projects for:
 - Interior shots
 - Exterior shots
@@ -43,10 +49,17 @@ Consider creating separate projects for:
 This allows you to apply different templates optimized for each type.
 
 ### Review Before Download
+
 Always review processed images individually before downloading. You can:
 - Re-process individual photos with different settings
 - Exclude photos from the final download
 - Make manual adjustments as needed
+
+<div class="callout-tip">
+
+Create a "hero shots" project first with your best 5–10 images. Once you find the perfect template, apply it to the full batch.
+
+</div>
 
 ## Managing Large Batches
 
