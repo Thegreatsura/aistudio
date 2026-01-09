@@ -5,8 +5,8 @@ export const siteConfig = {
 
   // Email settings
   email: {
-    from: "noreply@proppi.tech",
-    replyTo: "support@proppi.tech",
+    from: "noreply@updates.proppi.tech",
+    replyTo: "christer@proppi.tech",
   },
 
   // Links
