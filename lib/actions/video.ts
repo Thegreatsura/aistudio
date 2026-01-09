@@ -130,7 +130,7 @@ export async function createVideoProject(input: CreateVideoInput) {
       roomLabel: clip.roomLabel ?? null,
       sequenceOrder: clip.sequenceOrder,
       motionPrompt: getMotionPrompt(clip.roomType),
-      transitionType: clip.transitionType ?? "cut",
+      transitionType: clip.transitionType ?? "seamless",
       durationSeconds: clip.durationSeconds ?? VIDEO_DEFAULTS.CLIP_DURATION,
       status: "pending",
     }));

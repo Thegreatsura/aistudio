@@ -308,25 +308,26 @@ export function StoryboardStep({
                       <button
                         className={cn(
                           "flex items-center gap-1.5 rounded-lg border px-2.5 py-1.5 font-bold text-[9px] uppercase tracking-wider transition-all",
-                          (image.transitionType || "cut") === "seamless"
+                          (image.transitionType || "seamless") === "seamless"
                             ? "border-(--accent-teal)/30 bg-(--accent-teal)/10 text-(--accent-teal) shadow-sm"
                             : "border-muted-foreground/20 bg-background/80 text-muted-foreground hover:border-muted-foreground/40"
                         )}
                         onClick={(e) => {
                           e.stopPropagation();
-                          const currentType = image.transitionType || "cut";
+                          const currentType =
+                            image.transitionType || "seamless";
                           onUpdateTransitionType(
                             index,
                             currentType === "cut" ? "seamless" : "cut"
                           );
                         }}
                         title={
-                          (image.transitionType || "cut") === "seamless"
+                          (image.transitionType || "seamless") === "seamless"
                             ? "Seamless transition enabled"
                             : "Cut transition (click for seamless)"
                         }
                       >
-                        {(image.transitionType || "cut") === "seamless" ? (
+                        {(image.transitionType || "seamless") === "seamless" ? (
                           <>
                             <IconArrowRight className="h-3 w-3" />
                             <span>Seamless</span>

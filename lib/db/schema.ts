@@ -338,7 +338,7 @@ export const videoClip = pgTable(
     motionPrompt: text("motion_prompt"), // Motion description for Kling
 
     // Transition settings
-    transitionType: text("transition_type").notNull().default("cut"), // "cut" | "seamless"
+    transitionType: text("transition_type").notNull().default("seamless"), // "cut" | "seamless"
     transitionClipUrl: text("transition_clip_url"), // Generated transition video URL
 
     // Output

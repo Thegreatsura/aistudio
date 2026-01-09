@@ -124,7 +124,7 @@ export function useVideoCreation() {
           endImageId: img.id,
           endImageGenerationId: img.imageGenerationId,
           sequenceOrder: maxOrder + i + 1,
-          transitionType: img.transitionType || "cut",
+          transitionType: img.transitionType || "seamless",
         }));
         const combined = [...prev.images, ...imagesWithOrder];
         // Limit to max images
@@ -166,7 +166,7 @@ export function useVideoCreation() {
           endImageId: image.id,
           endImageGenerationId: image.imageGenerationId,
           sequenceOrder: slotIndex + 1,
-          transitionType: image.transitionType || "cut",
+          transitionType: image.transitionType || "seamless",
         };
 
         return {

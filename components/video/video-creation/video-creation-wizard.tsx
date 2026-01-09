@@ -205,7 +205,7 @@ export function VideoCreationWizard() {
           roomType: img.roomType,
           roomLabel: img.roomLabel || null,
           sequenceOrder: img.sequenceOrder,
-          transitionType: img.transitionType || "cut",
+          transitionType: img.transitionType || "seamless",
         })),
       });
 
