@@ -180,7 +180,6 @@ export function ImageMaskEditor({
         fabricRef.current = null;
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageLoaded, imageDimensions, brushSize]);
 
   // Update brush settings based on mode

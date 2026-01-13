@@ -55,7 +55,7 @@ export function WorkspacesDataTable({
 
   // Defer search to debounce filtering
   const deferredFilters = useDeferredValue(workspaceFilters);
-  const [_isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   // Pagination state - initialize with SSR data
   const [pages, setPages] = useState<AdminWorkspaceRow[][]>([initialData]);
@@ -63,7 +63,7 @@ export function WorkspacesDataTable({
   const [hasNextPage, setHasNextPage] = useState(initialMeta.hasMore);
   const [filteredTotal, setFilteredTotal] = useState(initialMeta.total);
   const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
-  const [isInitialLoad, _setIsInitialLoad] = useState(false); // Already loaded via SSR
+  const [isInitialLoad] = useState(false); // Already loaded via SSR
 
   // Handlers for workspace actions
   const handleSuspend = useCallback(
@@ -150,7 +150,7 @@ export function WorkspacesDataTable({
       return;
     }
 
-    startTransition(async () => {
+    const transitionFn = async () => {
       const result = await fetchAdminWorkspacesAction(
         null,
         20,
@@ -168,16 +168,19 @@ export function WorkspacesDataTable({
         setHasNextPage(result.data.meta.hasMore);
         setFilteredTotal(result.data.meta.total);
       }
-    });
+    };
+
+    startTransition(transitionFn);
   }, [
     deferredFilters,
     sortColumn,
     sortDirection,
     initialData,
-    pages[0],
+    pages,
     workspaceFilters.plan,
     workspaceFilters.search,
     workspaceFilters.status,
+    startTransition,
   ]);
 
   // Flatten all pages into single array

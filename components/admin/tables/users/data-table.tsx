@@ -80,7 +80,7 @@ export function UsersDataTable({
       return;
     }
 
-    startTransition(async () => {
+    const transitionFn = async () => {
       const result = await fetchAdminUsersAction(
         null,
         20,
@@ -99,17 +99,20 @@ export function UsersDataTable({
         setHasNextPage(result.data.meta.hasMore);
         setFilteredTotal(result.data.meta.total);
       }
-    });
+    };
+
+    startTransition(transitionFn);
   }, [
     deferredFilters,
     sortColumn,
     sortDirection,
     initialData,
-    pages[0],
+    pages,
     userFilters.role,
     userFilters.search,
     userFilters.status,
     userFilters.workspaceId,
+    startTransition,
   ]);
 
   // Flatten all pages into single array

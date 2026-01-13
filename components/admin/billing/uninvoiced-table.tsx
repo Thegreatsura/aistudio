@@ -164,7 +164,7 @@ export function UninvoicedTable({ items }: UninvoicedTableProps) {
 
       setSelectedIds(new Set());
       router.refresh();
-    } catch (_error) {
+    } catch {
       toast.error("Feil", {
         description: "Kunne ikke sende fakturaer",
       });
@@ -207,7 +207,7 @@ export function UninvoicedTable({ items }: UninvoicedTableProps) {
       });
 
       router.refresh();
-    } catch (_error) {
+    } catch {
       toast.error("Feil", {
         description: "Kunne ikke sende faktura",
       });

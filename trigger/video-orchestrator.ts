@@ -147,11 +147,11 @@ export const generateVideoTask = task({
         });
 
         // Reload clips to get updated clip URLs
-        const _updatedClips = await getVideoClips(videoProjectId);
+        await getVideoClips(videoProjectId);
 
         const transitionResults =
           await generateTransitionClipTask.batchTriggerAndWait(
-            clipsWithTransitions.map((clip, _index) => {
+            clipsWithTransitions.map((clip) => {
               const clipIndex = clips.findIndex((c) => c.id === clip.id);
               const nextClip = clips[clipIndex + 1];
 

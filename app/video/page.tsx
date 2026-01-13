@@ -6,6 +6,7 @@ import {
   IconPlus,
 } from "@tabler/icons-react";
 import { headers } from "next/headers";
+import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -152,9 +153,10 @@ export default async function VideoPage() {
                   {/* Thumbnail */}
                   <div className="relative aspect-video bg-muted">
                     {video.thumbnailUrl ? (
-                      <img
+                      <Image
                         alt={video.name}
                         className="h-full w-full object-cover"
+                        fill
                         src={video.thumbnailUrl}
                       />
                     ) : (

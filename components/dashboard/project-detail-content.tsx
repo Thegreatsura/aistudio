@@ -720,7 +720,6 @@ export function ProjectDetailContent({
   project,
   images,
   paymentRequired = false,
-  paymentStatus,
 }: ProjectDetailContentProps) {
   const router = useRouter();
   const [isRedirectingToPayment, setIsRedirectingToPayment] =
@@ -987,7 +986,7 @@ export function ProjectDetailContent({
     });
   };
 
-  const handleDownload = () => {
+  const handleDownload = useCallback(() => {
     const hasSelection = selectedImageIds.size > 0;
     const count = hasSelection ? selectedImageIds.size : completedImages.length;
 
@@ -1016,7 +1015,7 @@ export function ProjectDetailContent({
       success: "Download started",
       error: "Download failed",
     });
-  };
+  }, [project.id, selectedImageIds, completedImages.length, clearSelection]);
 
   const handleDownloadSingle = async (image: ImageGeneration) => {
     const imageUrl = image.resultImageUrl || image.originalImageUrl;

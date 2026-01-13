@@ -23,7 +23,6 @@ export function ImageProcessingStatus({
   runId,
   accessToken,
   onComplete,
-  taskType = "process",
 }: ImageProcessingStatusProps) {
   const router = useRouter();
 
@@ -92,8 +91,7 @@ function getDefaultLabel(status: string): string {
 // Hook for subscribing to multiple runs
 export function useProcessingRuns(
   runIds: string[],
-  accessToken: string | null,
-  _onComplete?: () => void
+  accessToken: string | null
 ) {
   const router = useRouter();
 
