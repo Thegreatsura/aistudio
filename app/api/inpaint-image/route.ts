@@ -6,7 +6,7 @@ import {
   getImageGenerationById,
   updateProjectCounts,
 } from "@/lib/db/queries";
-import { fal, NANO_BANANA_PRO_EDIT, QWEN_IMAGE_EDIT_INPAINT } from "@/lib/fal";
+import { fal, QWEN_IMAGE_EDIT_INPAINT } from "@/lib/fal";
 import {
   getExtensionFromContentType,
   getImagePath,
@@ -38,10 +38,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Mask is required for remove mode
-    if (mode === "remove" && !maskDataUrl) {
+    // Mask is required for both modes
+    if (!maskDataUrl) {
       return NextResponse.json(
-        { error: "Mask is required for remove mode" },
+        { error: "Mask is required for both add and remove modes" },
         { status: 400 }
       );
     }
@@ -152,25 +152,60 @@ export async function POST(request: NextRequest) {
         resultImageUrl = output.images[0].url;
         contentType = output.images[0].content_type || "image/jpeg";
       } else {
-        // ADD MODE: Use Nano Banana Pro (image-to-image)
-        console.log("Using Nano Banana Pro for add mode");
+        // ADD MODE: Use Qwen Image Edit Inpaint (same as remove mode)
+        console.log("Using Qwen Image Edit Inpaint for add mode");
 
-        const result = await fal.subscribe(NANO_BANANA_PRO_EDIT, {
+        // Convert base64 mask data URL to buffer
+        if (!maskDataUrl) {
+          return NextResponse.json(
+            { error: "Mask is required for add mode" },
+            { status: 400 }
+          );
+        }
+        const maskBase64 = maskDataUrl.split(",")[1];
+        if (!maskBase64) {
+          return NextResponse.json(
+            { error: "Invalid mask data URL format" },
+            { status: 400 }
+          );
+        }
+        const maskBuffer = Buffer.from(maskBase64, "base64");
+
+        // Resize mask to match source image dimensions
+        const resizedMaskBuffer = await sharp(maskBuffer)
+          .resize(imageWidth, imageHeight, { fit: "fill" })
+          .png()
+          .toBuffer();
+
+        console.log("Resized mask to match source image dimensions");
+
+        // Upload resized mask to Fal.ai storage
+        const maskBlob = new Blob([new Uint8Array(resizedMaskBuffer)], {
+          type: "image/png",
+        });
+        const falMaskUrl = await fal.storage.upload(
+          new File([maskBlob], "mask.png", { type: "image/png" })
+        );
+
+        console.log("Uploaded mask to Fal.ai storage:", falMaskUrl);
+
+        // Call Qwen Image Edit Inpaint API (same as remove mode)
+        const result = await fal.subscribe(QWEN_IMAGE_EDIT_INPAINT, {
           input: {
             prompt,
-            image_urls: [falImageUrl],
-            num_images: 1,
+            image_url: falImageUrl,
+            mask_url: falMaskUrl,
             output_format: "jpeg",
           },
         });
 
-        console.log("Nano Banana result:", JSON.stringify(result, null, 2));
+        console.log("Qwen Inpaint result:", JSON.stringify(result, null, 2));
 
         // Extract output from Result type (has data property)
         const output = result.data;
         if (!output.images?.[0]?.url) {
           console.error("No images in response. Full result:", result);
-          throw new Error("No image returned from Nano Banana");
+          throw new Error("No image returned from Qwen Inpaint");
         }
 
         resultImageUrl = output.images[0].url;
@@ -236,8 +271,7 @@ export async function POST(request: NextRequest) {
           editedFrom: image.id,
           editedAt: new Date().toISOString(),
           editMode: mode,
-          model:
-            mode === "remove" ? "qwen-image-edit-inpaint" : "nano-banana-pro",
+          model: "qwen-image-edit-inpaint",
         },
       });
 

@@ -995,9 +995,12 @@ export async function triggerInpaintTask(
     return { success: false, error: "Image not found" };
   }
 
-  // Mask is required for remove mode
-  if (mode === "remove" && !maskDataUrl) {
-    return { success: false, error: "Mask is required for remove mode" };
+  // Mask is required for both modes
+  if (!maskDataUrl) {
+    return {
+      success: false,
+      error: "Mask is required for both add and remove modes",
+    };
   }
 
   try {

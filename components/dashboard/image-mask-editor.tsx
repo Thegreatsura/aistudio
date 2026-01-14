@@ -23,6 +23,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { useInpaint } from "@/hooks/use-inpaint";
 import type { ImageGeneration } from "@/lib/db/schema";
@@ -96,6 +103,14 @@ export function ImageMaskEditor({
   const [objectDescription, setObjectDescription] = React.useState("");
   const [showObjectDescriptionDialog, setShowObjectDescriptionDialog] =
     React.useState(false);
+  const [showObjectRefinementDialog, setShowObjectRefinementDialog] =
+    React.useState(false);
+  const [objectDetails, setObjectDetails] = React.useState({
+    name: "",
+    size: "medium" as "small" | "medium" | "large",
+    style: "",
+    color: "",
+  });
 
   // Check if we're editing an older version
   const currentVersion = image.version || 1;
@@ -346,6 +361,109 @@ export function ImageMaskEditor({
     [image.id, inpaint, router, onClose, onEditStarted]
   );
 
+  // Generate prompt for adding object
+  const generateAddPrompt = React.useCallback(
+    (details: typeof objectDetails) => {
+      const { name, size, style, color } = details;
+
+      // Build prompt following Qwen inpainting best practices:
+      // 1. Be clear and specific about the object
+      // 2. Maintain contextual consistency
+      // 3. Describe object details (size, style, color)
+      // 4. Ensure it matches room aesthetic
+
+      let prompt = `Add a ${size} ${name}`;
+
+      // Add style and color details
+      if (style) prompt += ` in ${style} style`;
+      if (color) prompt += ` with ${color} color`;
+
+      // Add contextual instructions
+      prompt += ` that matches the room's aesthetic, lighting, and perspective. `;
+      prompt +=
+        "Keep the existing furniture, walls, and layout exactly the same. ";
+      prompt += `The ${name} should blend seamlessly with the existing decor and appear naturally integrated into the scene.`;
+
+      return prompt;
+    },
+    []
+  );
+
+  // Proceed with adding object after refinement is provided
+  const proceedWithAdd = React.useCallback(async () => {
+    if (!(fabricRef.current && objectDetails.name.trim())) {
+      return;
+    }
+
+    // Generate prompt from object details
+    const generatedPrompt = generateAddPrompt(objectDetails);
+
+    // Helper to proceed with submission (or show dialog)
+    const proceedWithSubmit = async (maskDataUrl: string) => {
+      if (isEditingOldVersion) {
+        // Show confirmation dialog
+        setPendingSubmitData({
+          maskDataUrl,
+          prompt: generatedPrompt,
+          mode: "add",
+        });
+        setShowReplaceDialog(true);
+      } else {
+        // Submit directly
+        await executeInpaint(maskDataUrl, generatedPrompt, "add", false);
+      }
+    };
+
+    // ADD MODE: Create mask and use Qwen Image Edit Inpaint (same as remove mode)
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = imageDimensions.width;
+    tempCanvas.height = imageDimensions.height;
+    const tempCtx = tempCanvas.getContext("2d");
+
+    if (!tempCtx) {
+      return;
+    }
+
+    // Fill with black (no edit areas)
+    tempCtx.fillStyle = "black";
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+    // Draw the fabric canvas content - convert colored strokes to white for mask
+    const fabricCanvas = fabricRef.current;
+    const originalPaths = fabricCanvas.getObjects("path");
+
+    // Temporarily change all path colors to white for the mask
+    originalPaths.forEach((path) => {
+      path.set("stroke", "white");
+    });
+    fabricCanvas.renderAll();
+
+    const fabricDataUrl = fabricCanvas.toDataURL({
+      format: "png",
+      multiplier: 1,
+    });
+
+    // Restore original colors (green for add mode)
+    originalPaths.forEach((path) => {
+      path.set("stroke", "rgba(34, 197, 94, 0.6)");
+    });
+    fabricCanvas.renderAll();
+
+    const maskImg = new window.Image();
+    maskImg.onload = async () => {
+      tempCtx.drawImage(maskImg, 0, 0);
+      const maskDataUrl = tempCanvas.toDataURL("image/png");
+      await proceedWithSubmit(maskDataUrl);
+    };
+    maskImg.src = fabricDataUrl;
+  }, [
+    objectDetails,
+    imageDimensions,
+    isEditingOldVersion,
+    executeInpaint,
+    generateAddPrompt,
+  ]);
+
   // Proceed with removal after description is provided
   const proceedWithRemoval = React.useCallback(async () => {
     if (!(fabricRef.current && objectDescription.trim())) {
@@ -449,9 +567,6 @@ export function ImageMaskEditor({
     if (!fabricRef.current) {
       return;
     }
-    if (mode === "add" && !objectToAdd.trim()) {
-      return;
-    }
 
     // For remove mode, check if we have object description
     if (mode === "remove") {
@@ -465,32 +580,35 @@ export function ImageMaskEditor({
       return;
     }
 
-    // ADD MODE: Use Nano Banana with a descriptive prompt
-    const object = objectToAdd.trim().toLowerCase();
-    const generatedPrompt = `Interior room photo with a ${object} added. Keep the existing furniture, walls, and layout exactly the same. Add a stylish ${object} that matches the room's aesthetic and lighting.`;
-
-    // Helper to proceed with submission (or show dialog)
-    const proceedWithSubmit = async (maskDataUrl: string) => {
-      if (isEditingOldVersion) {
-        // Show confirmation dialog
-        setPendingSubmitData({ maskDataUrl, prompt: generatedPrompt, mode });
-        setShowReplaceDialog(true);
-      } else {
-        // Submit directly
-        await executeInpaint(maskDataUrl, generatedPrompt, mode, false);
+    // ADD MODE: Check if we have mask and object
+    if (mode === "add") {
+      if (!objectToAdd.trim() || canvasHistory.length === 0) {
+        return;
       }
-    };
-
-    // ADD MODE: Use Nano Banana (no mask needed)
-    await proceedWithSubmit("");
+      // Initialize object details with quick selection
+      setObjectDetails((prev) => ({ ...prev, name: objectToAdd.trim() }));
+      setShowObjectRefinementDialog(true);
+      return;
+    }
   }, [
     mode,
     objectToAdd,
     objectDescription,
+    canvasHistory.length,
     proceedWithRemoval,
-    isEditingOldVersion,
-    executeInpaint,
   ]);
+
+  // Handle confirmed object refinement
+  const handleConfirmAddObject = React.useCallback(async () => {
+    if (!objectDetails.name.trim()) {
+      return;
+    }
+
+    setShowObjectRefinementDialog(false);
+
+    // Proceed with add - this will create mask and generate prompt
+    await proceedWithAdd();
+  }, [objectDetails, proceedWithAdd]);
 
   // Handle escape key
   React.useEffect(() => {
@@ -640,6 +758,23 @@ export function ImageMaskEditor({
               style={{ cursor: "none" }}
             />
 
+            {/* Add mode placement indicator */}
+            {mode === "add" && maskBounds && (
+              <div
+                className="pointer-events-none absolute rounded-lg border-2 border-green-400 border-dashed bg-green-400/10"
+                style={{
+                  left: maskBounds.x,
+                  top: maskBounds.y,
+                  width: maskBounds.width,
+                  height: maskBounds.height,
+                }}
+              >
+                <div className="absolute -top-6 left-0 whitespace-nowrap font-medium text-green-400 text-xs">
+                  Object placement area
+                </div>
+              </div>
+            )}
+
             {/* Brush size preview cursor */}
             {isCanvasReady && cursorPosition && (
               <div
@@ -666,21 +801,9 @@ export function ImageMaskEditor({
               </div>
             )}
 
-            {/* Floating input panel for Add mode */}
-            {mode === "add" && maskBounds && canvasHistory.length > 0 && (
-              <div
-                className="absolute z-10 w-64 rounded-lg border border-white/20 bg-black/90 p-3 shadow-xl backdrop-blur-sm"
-                style={{
-                  left: Math.max(
-                    0,
-                    Math.min(maskBounds.x, imageDimensions.width - 256)
-                  ),
-                  top: Math.min(
-                    maskBounds.y + 12,
-                    imageDimensions.height - 160
-                  ),
-                }}
-              >
+            {/* Floating input panel for Add mode - always visible */}
+            {mode === "add" && (
+              <div className="absolute top-4 right-4 z-10 w-64 rounded-lg border border-white/20 bg-black/90 p-3 shadow-xl backdrop-blur-sm">
                 <p className="mb-2 font-medium text-white/70 text-xs">
                   Quick add:
                 </p>
@@ -715,7 +838,11 @@ export function ImageMaskEditor({
                   />
                   <Button
                     className="h-8 gap-1.5 bg-green-500 hover:bg-green-600"
-                    disabled={isProcessing || !objectToAdd.trim()}
+                    disabled={
+                      isProcessing ||
+                      !objectToAdd.trim() ||
+                      canvasHistory.length === 0
+                    }
                     onClick={handleSubmit}
                     size="sm"
                   >
@@ -762,11 +889,35 @@ export function ImageMaskEditor({
               </Button>
             </>
           ) : (
-            <p className="text-white/70">
-              {canvasHistory.length === 0
-                ? "Draw where you want to add the object"
-                : "Select or type what to add in the panel above"}
-            </p>
+            <>
+              <p className="text-white/70">
+                {canvasHistory.length === 0
+                  ? "Draw where you want to add the object"
+                  : "Object will be added in the marked area"}
+              </p>
+              <Button
+                className="min-w-[120px] gap-2 bg-green-500 hover:bg-green-600"
+                disabled={
+                  isProcessing ||
+                  !isCanvasReady ||
+                  !objectToAdd.trim() ||
+                  canvasHistory.length === 0
+                }
+                onClick={handleSubmit}
+              >
+                {isProcessing ? (
+                  <>
+                    <IconLoader2 className="h-4 w-4 animate-spin" />
+                    Processing…
+                  </>
+                ) : (
+                  <>
+                    <IconSparkles className="h-4 w-4" />
+                    Add Object
+                  </>
+                )}
+              </Button>
+            </>
           )}
         </div>
 
@@ -825,6 +976,104 @@ export function ImageMaskEditor({
               onClick={handleConfirmObjectDescription}
             >
               Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Object refinement dialog for Add mode */}
+      <AlertDialog
+        onOpenChange={(open) => {
+          setShowObjectRefinementDialog(open);
+          if (!open) {
+            // Reset object details when dialog closes
+            setObjectDetails({
+              name: "",
+              size: "medium",
+              style: "",
+              color: "",
+            });
+          }
+        }}
+        open={showObjectRefinementDialog}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Describe the object to add</AlertDialogTitle>
+            <AlertDialogDescription>
+              Provide details to help the AI add the perfect object
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="space-y-4 py-4">
+            <div>
+              <label className="mb-1.5 block font-medium text-sm text-white/90">
+                Object name
+              </label>
+              <Input
+                autoFocus
+                className="w-full"
+                onChange={(e) =>
+                  setObjectDetails({ ...objectDetails, name: e.target.value })
+                }
+                placeholder="e.g., armchair, floor lamp, coffee table"
+                value={objectDetails.name}
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block font-medium text-sm text-white/90">
+                Size
+              </label>
+              <Select
+                onValueChange={(v: "small" | "medium" | "large") =>
+                  setObjectDetails({ ...objectDetails, size: v })
+                }
+                value={objectDetails.size}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="small">Small</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="large">Large</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <label className="mb-1.5 block font-medium text-sm text-white/90">
+                Style (optional)
+              </label>
+              <Input
+                className="w-full"
+                onChange={(e) =>
+                  setObjectDetails({ ...objectDetails, style: e.target.value })
+                }
+                placeholder="e.g., modern, vintage, minimalist"
+                value={objectDetails.style}
+              />
+            </div>
+            <div>
+              <label className="mb-1.5 block font-medium text-sm text-white/90">
+                Color (optional)
+              </label>
+              <Input
+                className="w-full"
+                onChange={(e) =>
+                  setObjectDetails({ ...objectDetails, color: e.target.value })
+                }
+                placeholder="e.g., white, dark wood, black"
+                value={objectDetails.color}
+              />
+            </div>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-green-500 hover:bg-green-600"
+              disabled={!objectDetails.name.trim()}
+              onClick={handleConfirmAddObject}
+            >
+              Add Object
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
