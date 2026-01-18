@@ -62,6 +62,36 @@ export const ROOM_TYPE_LABELS: Partial<Record<RoomType, string>> = {
   other: "Other",
 };
 
+export const ROOM_TYPE_EMOJIS: Partial<Record<RoomType, string>> = {
+  "living-room": "🛋️",
+  kitchen: "🍳",
+  bedroom: "🛏️",
+  bathroom: "🛁",
+  toilet: "🚽",
+  hallway: "🚪",
+  office: "🖥️",
+  "laundry-room": "🧺",
+  "storage-room": "📦",
+  "walk-in-closet": "👚",
+  sauna: "🔥",
+  gym: "🏋️",
+  "childrens-room": "🧸",
+  "pool-area": "🏊",
+  "dining-room": "🍽️",
+  "tv-room": "📺",
+  library: "📚",
+  "hobby-room": "🎨",
+  "utility-room": "🧰",
+  pantry: "🥫",
+  conservatory: "🌿",
+  garage: "🚗",
+  terrace: "🌇",
+  garden: "🌼",
+  landscape: "🏞️",
+  exterior: "🏠",
+  other: "✨",
+};
+
 export const getRoomTypeLabel = (roomType: RoomType): string => {
   const mapped = ROOM_TYPE_LABELS[roomType];
   if (mapped) {
@@ -72,3 +102,15 @@ export const getRoomTypeLabel = (roomType: RoomType): string => {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 };
+
+export const getRoomTypeDisplay = (roomType: RoomType): string => {
+  const emoji = ROOM_TYPE_EMOJIS[roomType];
+  const label = getRoomTypeLabel(roomType);
+  return emoji ? `${emoji} ${label}` : label;
+};
+
+export const ROOM_TYPE_OPTIONS = ROOM_TYPE_IDS.map((roomType) => ({
+  id: roomType,
+  label: getRoomTypeLabel(roomType),
+  emoji: ROOM_TYPE_EMOJIS[roomType] ?? "",
+})).sort((a, b) => a.label.localeCompare(b.label));

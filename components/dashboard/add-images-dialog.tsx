@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useImageUpload } from "@/hooks/use-image-upload";
-import { getRoomTypeLabel, ROOM_TYPE_IDS } from "@/lib/room-types";
+import { ROOM_TYPE_OPTIONS } from "@/lib/room-types";
 import { cn } from "@/lib/utils";
 
 interface UploadedImage {
@@ -326,13 +326,15 @@ export function AddImagesDialog({
                               <SelectValue placeholder="Select room type" />
                             </SelectTrigger>
                             <SelectContent>
-                              {ROOM_TYPE_IDS.map((roomType) => (
+                              {ROOM_TYPE_OPTIONS.map((roomType) => (
                                 <SelectItem
                                   className="text-xs"
-                                  key={roomType}
-                                  value={roomType}
+                                  key={roomType.id}
+                                  value={roomType.id}
                                 >
-                                  {getRoomTypeLabel(roomType)}
+                                  {roomType.emoji
+                                    ? `${roomType.emoji} ${roomType.label}`
+                                    : roomType.label}
                                 </SelectItem>
                               ))}
                             </SelectContent>

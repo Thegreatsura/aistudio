@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/select";
 import type { UploadedImage } from "@/hooks/use-project-creation";
 import {
-  getRoomTypeLabel,
-  ROOM_TYPE_IDS,
+  getRoomTypeDisplay,
+  ROOM_TYPE_OPTIONS,
   type RoomType,
 } from "@/lib/room-types";
 import { cn } from "@/lib/utils";
@@ -51,7 +51,7 @@ export function RoomTypeStep({ images, onUpdateRoomType }: RoomTypeStepProps) {
               />
               {image.roomType && (
                 <div className="absolute top-2 right-2 rounded-full bg-[var(--accent-teal)] px-2 py-0.5 font-medium text-white text-xs">
-                  {getRoomTypeLabel(image.roomType as RoomType)}
+                  {getRoomTypeDisplay(image.roomType as RoomType)}
                 </div>
               )}
             </div>
@@ -70,13 +70,15 @@ export function RoomTypeStep({ images, onUpdateRoomType }: RoomTypeStepProps) {
                   <SelectValue placeholder="Select room type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {ROOM_TYPE_IDS.map((roomType) => (
+                  {ROOM_TYPE_OPTIONS.map((roomType) => (
                     <SelectItem
                       className="text-xs"
-                      key={roomType}
-                      value={roomType}
+                      key={roomType.id}
+                      value={roomType.id}
                     >
-                      {getRoomTypeLabel(roomType)}
+                      {roomType.emoji
+                        ? `${roomType.emoji} ${roomType.label}`
+                        : roomType.label}
                     </SelectItem>
                   ))}
                 </SelectContent>

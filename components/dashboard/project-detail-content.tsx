@@ -54,7 +54,7 @@ import {
 import type { ImageGeneration, Project, ProjectStatus } from "@/lib/db/schema";
 import {
   getRoomTypeLabel,
-  ROOM_TYPE_IDS,
+  ROOM_TYPE_OPTIONS,
   type RoomType,
 } from "@/lib/room-types";
 import { getTemplateById } from "@/lib/style-templates";
@@ -1517,13 +1517,15 @@ export function ProjectDetailContent({
                             <SelectValue placeholder="Select room type" />
                           </SelectTrigger>
                           <SelectContent>
-                            {ROOM_TYPE_IDS.map((roomType) => (
+                            {ROOM_TYPE_OPTIONS.map((roomType) => (
                               <SelectItem
                                 className="text-xs"
-                                key={roomType}
-                                value={roomType}
+                                key={roomType.id}
+                                value={roomType.id}
                               >
-                                {getRoomTypeLabel(roomType)}
+                                {roomType.emoji
+                                  ? `${roomType.emoji} ${roomType.label}`
+                                  : roomType.label}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -1683,9 +1685,11 @@ export function ProjectDetailContent({
                   <SelectValue placeholder="Assign room type" />
                 </SelectTrigger>
                 <SelectContent>
-                  {ROOM_TYPE_IDS.map((roomType) => (
-                    <SelectItem key={roomType} value={roomType}>
-                      {getRoomTypeLabel(roomType)}
+                  {ROOM_TYPE_OPTIONS.map((roomType) => (
+                    <SelectItem key={roomType.id} value={roomType.id}>
+                      {roomType.emoji
+                        ? `${roomType.emoji} ${roomType.label}`
+                        : roomType.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
