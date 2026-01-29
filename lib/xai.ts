@@ -85,19 +85,54 @@ async function xaiRequest<T>(
 /**
  * Edit an image using xAI's image editing API.
  * Note: This is prompt-only editing - no mask support.
+ * The xAI API requires multipart form data with the image as a file upload.
  */
 export async function editImage(
   input: XAIImageEditInput
 ): Promise<{ url: string }> {
-  const result = await xaiRequest<XAIImageEditOutput>("/images/edits", {
+  const apiKey = getApiKey();
+
+  // Create form data for the request
+  const formData = new FormData();
+
+  // If the image is a URL, fetch it first and add as a file
+  if (input.image.startsWith("http://") || input.image.startsWith("https://")) {
+    const imageResponse = await fetch(input.image);
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to fetch image: ${imageResponse.status}`);
+    }
+    const imageBlob = await imageResponse.blob();
+    formData.append("image", imageBlob, "image.png");
+  } else if (input.image.startsWith("data:")) {
+    // Handle data URL (base64)
+    const base64Data = input.image.split(",")[1];
+    const mimeType = input.image.split(";")[0].split(":")[1];
+    const binaryData = Buffer.from(base64Data, "base64");
+    const blob = new Blob([binaryData], { type: mimeType });
+    formData.append("image", blob, "image.png");
+  } else {
+    throw new Error("Invalid image format: must be URL or data URL");
+  }
+
+  formData.append("prompt", input.prompt);
+  formData.append("model", input.model || "grok-2-image");
+  formData.append("n", String(input.n || 1));
+
+  const response = await fetch(`${XAI_API_URL}/images/edits`, {
     method: "POST",
-    body: JSON.stringify({
-      image: input.image,
-      prompt: input.prompt,
-      model: input.model || "grok-2-image",
-      n: input.n || 1,
-    }),
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      // Don't set Content-Type - let fetch set it with the boundary for multipart
+    },
+    body: formData,
   });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`xAI API error (${response.status}): ${errorText}`);
+  }
+
+  const result: XAIImageEditOutput = await response.json();
 
   if (!result.data?.[0]) {
     throw new Error("No image returned from xAI");

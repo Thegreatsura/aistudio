@@ -130,16 +130,12 @@ export const inpaintImageTask = task({
         logger.info("Using xAI provider for image editing");
 
         // Import xAI functions dynamically to avoid loading if not needed
-        const { editImage: xaiEditImage, imageUrlToBase64 } = await import(
-          "@/lib/xai"
-        );
+        const { editImage: xaiEditImage } = await import("@/lib/xai");
 
-        // Convert source image to base64 for xAI API
-        const imageBase64 = await imageUrlToBase64(sourceImageUrl);
-
-        // Call xAI image edit API
+        // Call xAI image edit API with the source URL directly
+        // The editImage function handles URL fetching internally
         const xaiResult = await xaiEditImage({
-          image: imageBase64,
+          image: sourceImageUrl,
           prompt,
         });
 
